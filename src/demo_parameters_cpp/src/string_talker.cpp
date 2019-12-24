@@ -23,7 +23,8 @@ private:
         update_parameters();
         auto string_msg = std_msgs::msg::String();
         string_msg.data = string_param;
-        RCLCPP_INFO(this->get_logger(), "publishing : '%s'", string_msg.data.c_str());
+        // RCLCPP_INFO(this->get_logger(), "publishing : '%s'", string_msg.data.c_str());
+        std::cout << "publishing : " << string_msg.data << std::endl;
         string_pub->publish(string_msg);
     }
 

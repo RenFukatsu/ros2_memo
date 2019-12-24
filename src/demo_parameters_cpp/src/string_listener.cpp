@@ -16,7 +16,8 @@ public:
 private:
     void callback(const std_msgs::msg::String::SharedPtr msg) const
     {
-        RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
+        // RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg->data.c_str());
+        std::cout << "I heard : " << msg->data << std::endl;
     }
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscroption;
 };

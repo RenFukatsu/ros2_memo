@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="demo_parameters_cpp" exec="string_talker">
+        <param from="$(find-pkg-share demo_parameters_cpp)/parameters/string_topic.yaml" />
+    </node>
+
+    <node pkg="demo_parameters_cpp" exec="string_listener" output="screen" />
+</launch>

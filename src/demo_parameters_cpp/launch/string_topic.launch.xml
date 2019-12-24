@@ -1,0 +1,7 @@
+<launch>
+    <node pkg="demo_parameters_cpp" exec="string_talker" >
+        <param name="string_param" value="launch defalt" />
+    </node>
+
+    <node pkg="demo_parameters_cpp" exec="string_listener" output="screen" />
+</launch>
