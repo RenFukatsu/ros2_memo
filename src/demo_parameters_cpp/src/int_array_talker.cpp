@@ -3,6 +3,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/int64_multi_array.hpp"
+using std::placeholders::_1;
 
 using namespace std::chrono_literals;
 
@@ -13,6 +14,7 @@ public:
     {
         std::vector<int64_t> defalt_int_array = {1,2,3};
         int_array_param = this->declare_parameter("int_array_param", defalt_int_array);
+        parameter_event_sub = this->create_subscription<rcl_interfaces::msg::ParameterEvent>("/parameter_events", 10, std::bind(&Talker::update_parameters, this, _1));
 
         int_array_pub = this->create_publisher<std_msgs::msg::Int64MultiArray>("int_array_topic", 10);
         timer = this->create_wall_timer(500ms, std::bind(&Talker::timer_callback, this));
@@ -21,7 +23,6 @@ public:
 private:
     void timer_callback()
     {
-        update_parameters();
         auto int_array_msg = std_msgs::msg::Int64MultiArray();
         int_array_msg.data = int_array_param;
         std::string str = "";
@@ -40,13 +41,17 @@ private:
         int_array_pub->publish(int_array_msg);
     }
 
-    void update_parameters()
+    void update_parameters(const rcl_interfaces::msg::ParameterEvent::SharedPtr event)
     {
-        this->get_parameter("int_array_param", int_array_param);
+        if (event->node == this->get_fully_qualified_name())
+        {
+            this->get_parameter("int_array_param", int_array_param);
+        }
     }
 
     std::vector<int64_t> int_array_param;
     rclcpp::Publisher<std_msgs::msg::Int64MultiArray>::SharedPtr int_array_pub;
+    rclcpp::Subscription<rcl_interfaces::msg::ParameterEvent>::SharedPtr parameter_event_sub;
 
     rclcpp::TimerBase::SharedPtr timer;
     size_t count;
