@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="demo_nodes_cpp" exec="talker" output="screen">
+        <param name="string_msg" value="a" />
+    </node>
+</launch>
